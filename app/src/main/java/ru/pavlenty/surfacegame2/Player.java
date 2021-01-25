@@ -31,7 +31,9 @@ public class Player {
 
 
         detectCollision =  new Rect(x, y, bitmap.getWidth(), bitmap.getHeight());
+        // Rect.intersects()
     }
+    public Rect getRect(){ return detectCollision;}
 
     public void setBoosting() {
         boosting = true;

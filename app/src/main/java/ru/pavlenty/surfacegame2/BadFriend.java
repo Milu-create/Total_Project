@@ -8,8 +8,7 @@ import android.util.Log;
 
 import java.util.Random;
 
-public class Friend {
-
+public class BadFriend {
     private Bitmap bitmap;
     private int x;
     private int y;
@@ -22,24 +21,25 @@ public class Friend {
     private int minY;
     private Rect detectCollision;
 
-    public Friend(Context context, int screenX, int screenY) {
+
+    public BadFriend(Context context, int screenX, int screenY) {
         Log.d("RRR screenX",Integer.toString(screenX));
 
-        this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.friend);
+        this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemy);
         this.maxX = screenX;
         this.maxY = screenY;
         this.minX = 0;
         this.minY = 0;
         Random r = new Random();
-        speed = r.nextInt(6);
+        speed = r.nextInt(10);
         x = screenX;
         y = r.nextInt(this.maxY);
 
         Random generator = new Random();
         speed = generator.nextInt(15);
-
         detectCollision = new Rect(x, y, bitmap.getWidth(), bitmap.getHeight());
     }
+
     public Rect getRect(){ return detectCollision;}
 
     public void update(int playerSpeed) {
