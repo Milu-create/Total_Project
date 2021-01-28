@@ -40,7 +40,6 @@ public class Friend {
 
         detectCollision = new Rect(x, y, bitmap.getWidth(), bitmap.getHeight());
     }
-    public Rect getRect(){ return detectCollision;}
 
     public void update(int playerSpeed) {
         x -= playerSpeed;

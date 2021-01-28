@@ -31,7 +31,6 @@ public class Player {
 
 
         detectCollision =  new Rect(x, y, bitmap.getWidth(), bitmap.getHeight());
-        // Rect.intersects()
     }
     public Rect getRect(){ return detectCollision;}
 
@@ -73,11 +72,6 @@ public class Player {
         detectCollision.right = x + bitmap.getWidth();
         detectCollision.bottom = y + bitmap.getHeight();
 
-    }
-
-
-    public Rect getDetectCollision() {
-        return detectCollision;
     }
 
     public Bitmap getBitmap() {

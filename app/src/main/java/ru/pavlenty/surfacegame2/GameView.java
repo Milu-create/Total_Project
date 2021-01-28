@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.media.MediaPlayer;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -42,6 +43,7 @@ public class GameView extends SurfaceView implements Runnable {
     static MediaPlayer gameOnsound;
     final MediaPlayer killedEnemysound;
     final MediaPlayer gameOversound;
+    private Rect rect;
 
     Context context;
 
@@ -181,14 +183,23 @@ public class GameView extends SurfaceView implements Runnable {
         score++;
 
         player.update();
-
+        rect =  new Rect();
 
         for (Friend f : friends) {
             f.update(player.getSpeed());
+            /*if(rect.intersects(f.getRect(), player.getRect())){
+                score += 1000;
+            }*/
+            Log.d("RRR upscore", Boolean.toString(player.getRect().intersect(f.getX(), f.getY(), f.getBitmap().getWidth(), f.getBitmap().getHeight())));
         }
 
         for (BadFriend f : badfriends) {
             f.update(player.getSpeed());
+            if(rect.intersects(player.getRect(), f.getRect())){
+                score -= 1000;
+                Log.d("RRR losescore", Boolean.toString(player.getRect().intersects(f.getX(), f.getY(), f.getBitmap().getWidth(), f.getBitmap().getHeight())));
+
+            }
         }
 
 
