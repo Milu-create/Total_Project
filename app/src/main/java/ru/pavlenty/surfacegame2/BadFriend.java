@@ -27,7 +27,7 @@ public class BadFriend {
 
         this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemy);
         this.maxX = screenX;
-        this.maxY = screenY;
+        this.maxY = screenY - bitmap.getHeight();
         this.minX = 0;
         this.minY = 0;
         Random r = new Random();
@@ -51,7 +51,13 @@ public class BadFriend {
             y = generator.nextInt(maxY);
             speed = generator.nextInt(15);
         }
+
+        detectCollision.left = x;
+        detectCollision.top = y;
+        detectCollision.right = x + bitmap.getWidth();
+        detectCollision.bottom = y + bitmap.getHeight();
     }
+    public void changeX(){x = -bitmap.getWidth();}
 
     public Bitmap getBitmap() {
         return bitmap;

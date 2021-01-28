@@ -3,6 +3,7 @@ package ru.pavlenty.surfacegame2;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -29,6 +30,8 @@ public class GameView extends SurfaceView implements Runnable {
     private ArrayList<Friend> friends = new ArrayList<Friend>();
     private ArrayList<BadFriend> badfriends = new ArrayList<BadFriend>();
 
+    private Boom boom;
+
     int screenX;
     int countMisses;
 
@@ -49,6 +52,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     public GameView(Context context, int screenX, int screenY) {
         super(context);
+        boom = new Boom(context);
         player = new Player(context, screenX, screenY);
 
         surfaceHolder = getHolder();
@@ -114,7 +118,11 @@ public class GameView extends SurfaceView implements Runnable {
     @Override
     public void run() {
         while (playing) {
-            update();
+            try {
+                update();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             draw();
             control();
         }
@@ -134,6 +142,7 @@ public class GameView extends SurfaceView implements Runnable {
                 canvas.drawPoint(s.getX(), s.getY(), paint);
             }
 
+            canvas.drawBitmap(boom.getBitmap(), boom.getX(), boom.getY(), paint);
 
 
             paint.setTextSize(30);
@@ -179,31 +188,33 @@ public class GameView extends SurfaceView implements Runnable {
         gameOnsound.stop();
     }
 
-    private void update() {
+    private void update() throws InterruptedException {
         score++;
 
         player.update();
-        rect =  new Rect();
 
         for (Friend f : friends) {
             f.update(player.getSpeed());
-            /*if(rect.intersects(f.getRect(), player.getRect())){
+            if(Rect.intersects(player.getRect(), f.getRect())){
+                killedEnemysound.start();
                 score += 1000;
-            }*/
-            Log.d("RRR upscore", Boolean.toString(player.getRect().intersect(f.getX(), f.getY(), f.getBitmap().getWidth(), f.getBitmap().getHeight())));
+                boom.change( f.getX(), f.getY());
+                f.changeX();
+                Log.d("RRR upscore", Boolean.toString(Rect.intersects(player.getRect(), f.getRect())));
+            }
         }
 
         for (BadFriend f : badfriends) {
             f.update(player.getSpeed());
-            if(rect.intersects(player.getRect(), f.getRect())){
+            if(Rect.intersects(player.getRect(), f.getRect())){
+                killedEnemysound.start();
                 score -= 1000;
-                Log.d("RRR losescore", Boolean.toString(player.getRect().intersects(f.getX(), f.getY(), f.getBitmap().getWidth(), f.getBitmap().getHeight())));
+                boom.change( f.getX(), f.getY());
+                f.changeX();
+                Log.d("RRR losescore", Boolean.toString(Rect.intersects(player.getRect(), f.getRect())));
 
             }
         }
-
-
-
     }
 
     private void control() {

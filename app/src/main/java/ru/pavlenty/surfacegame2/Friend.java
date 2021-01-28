@@ -27,7 +27,7 @@ public class Friend {
 
         this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.friend);
         this.maxX = screenX;
-        this.maxY = screenY;
+        this.maxY = screenY - bitmap.getHeight();
         this.minX = 0;
         this.minY = 0;
         Random r = new Random();
@@ -50,7 +50,15 @@ public class Friend {
             y = generator.nextInt(maxY);
             speed = generator.nextInt(15);
         }
+
+        detectCollision.left = x;
+        detectCollision.top = y;
+        detectCollision.right = x + bitmap.getWidth();
+        detectCollision.bottom = y + bitmap.getHeight();
     }
+    public void changeX(){x = -bitmap.getWidth();}
+
+    public Rect getRect(){ return detectCollision;}
 
     public Bitmap getBitmap() {
         return bitmap;
