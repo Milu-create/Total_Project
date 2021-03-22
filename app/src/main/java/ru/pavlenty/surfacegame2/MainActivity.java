@@ -40,11 +40,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Вы хотите выйти?")
-                .setCancelable(false)
-                .setPositiveButton("Да", new DialogInterface.OnClickListener() {
+        builder.setMessage("Вы хотите выйти?").setCancelable(false).setPositiveButton("Да", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
                         GameView.stopMusic();
                         Intent startMain = new Intent(Intent.ACTION_MAIN);
                         startMain.addCategory(Intent.CATEGORY_HOME);
