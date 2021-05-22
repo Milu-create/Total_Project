@@ -5,36 +5,38 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+import com.google.android.material.snackbar.Snackbar;
 
-    private ImageButton buttonPlay;
-    private ImageButton buttonScore;
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, Begin.OnBeginDataListener {
+
+    public static final String KEY = "key";
+
+    public void loadFragment(Fragment f) {
+        FragmentManager fm = getSupportFragmentManager();
+
+        Bundle args = new Bundle();
+        args.putString(KEY,"something");
+        f.setArguments(args);
+
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction.replace(R.id.frLayout,f);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        buttonPlay = (ImageButton) findViewById(R.id.buttonPlay);
-        buttonScore = (ImageButton) findViewById(R.id.buttonScore);
-        buttonPlay.setOnClickListener(this);
-        buttonScore.setOnClickListener(this);
-    }
-
-
-    @Override
-    public void onClick(View v) {
-        if (v == buttonPlay) {
-            startActivity(new Intent(MainActivity.this, GameActivity.class));
-        }
-
-        if (v == buttonScore) {
-            startActivity(new Intent(MainActivity.this, HightScore.class));
-        }
+        setContentView(R.layout.main);
+        loadFragment(new Begin());
     }
 
     @Override
@@ -59,4 +61,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         alert.show();
 
     }
+
+    @Override
+    public void onBeginDataListener(String str) {
+        Snackbar.make(findViewById(R.id.root),str,Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onClick(View v) {}
 }
