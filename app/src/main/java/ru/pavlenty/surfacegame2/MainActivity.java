@@ -3,29 +3,23 @@ package ru.pavlenty.surfacegame2;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-
 import com.google.android.material.snackbar.Snackbar;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, Begin.OnBeginDataListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, Begin.OnBeginDataListener, Menu.OnMenuDataListener{
 
     public static final String KEY = "key";
 
-    public void loadFragment(Fragment f) {
+    private void loadFragment(Fragment f) {
         FragmentManager fm = getSupportFragmentManager();
-
         Bundle args = new Bundle();
         args.putString(KEY,"something");
         f.setArguments(args);
-
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.frLayout,f);
         fragmentTransaction.addToBackStack(null);
@@ -69,4 +63,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {}
+
+    @Override
+    public void onMenuDataListener(String str) {
+        Snackbar.make(findViewById(R.id.root),str,Snackbar.LENGTH_LONG).show();
+    }
 }

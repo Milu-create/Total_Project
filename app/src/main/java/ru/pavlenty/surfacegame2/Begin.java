@@ -1,20 +1,26 @@
 package ru.pavlenty.surfacegame2;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
+import android.widget.TextView;
+import androidx.fragment.app.FragmentManager;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.google.android.material.snackbar.Snackbar;
 
 public class Begin extends Fragment{
 
     private String val;
     private Button btn2;
     private View view;
+    private TextView textView;
 
     Begin.OnBeginDataListener frListener;
 
@@ -33,10 +39,11 @@ public class Begin extends Fragment{
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if(context instanceof Menu.OnMenuDataListener) {
+        if(context instanceof Begin.OnBeginDataListener) {
             frListener = (Begin.OnBeginDataListener) context;
-        } else {
-            // исключение можно выбросить
+        }
+        else {
+            throw new NullPointerException("Объект не создан на основе класса Begin");
         }
     }
 
@@ -48,13 +55,17 @@ public class Begin extends Fragment{
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // печатаем полученное значение из активности
-                //Snackbar.make(view.findViewById(R.id.fr1root),val,Snackbar.LENGTH_LONG).show();
-                // вызываем метод реализованный в активности
-                frListener.onBeginDataListener("back string");
-
+                FragmentTransaction ftrans = getFragmentManager().beginTransaction();
+                ftrans.replace(R.id.root, new Menu());
+                ftrans.commit();
             }
         });
+        textView = view.findViewById(R.id.textView);
+        DelayedPrinter.Word word = new DelayedPrinter.Word(50, "-Хм... Я уже был здесь.\n-Капитан, мы приземлились в Научном городе улица Просвещения.\n" +
+                "-Какой сейчас год?\n-...Если я не ошибаюсь, 1989.\n-Ого, куда нас занесло. У нас есть время зайти в моё любимое место?\n-Конечно, корабль пока перезагружается." +
+                "\n-Отлично! Мы отправляемся в компьютерный клуб Neo Club.");
+        word.setOffset(50);
+        DelayedPrinter.printText(word, textView);
         return view;
     }
 
