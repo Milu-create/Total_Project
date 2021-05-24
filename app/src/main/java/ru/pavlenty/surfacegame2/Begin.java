@@ -1,19 +1,15 @@
 package ru.pavlenty.surfacegame2;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import androidx.fragment.app.FragmentManager;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
-import com.google.android.material.snackbar.Snackbar;
 
 public class Begin extends Fragment{
 
@@ -24,9 +20,7 @@ public class Begin extends Fragment{
 
     Begin.OnBeginDataListener frListener;
 
-    public Begin() {
-
-    }
+    public Begin() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,7 +55,7 @@ public class Begin extends Fragment{
             }
         });
         textView = view.findViewById(R.id.textView);
-        DelayedPrinter.Word word = new DelayedPrinter.Word(50, "-Хм... Я уже был здесь.\n-Капитан, мы приземлились в Научном городе улица Просвещения.\n" +
+        DelayedPrinter.Word word = new DelayedPrinter.Word(50, "-Хм... Я уже был здесь.\n-Капитан, мы приземлились в Научном городе, улица Просвещения.\n" +
                 "-Какой сейчас год?\n-...Если я не ошибаюсь, 1989.\n-Ого, куда нас занесло. У нас есть время зайти в моё любимое место?\n-Конечно, корабль пока перезагружается." +
                 "\n-Отлично! Мы отправляемся в компьютерный клуб Neo Club.");
         word.setOffset(50);

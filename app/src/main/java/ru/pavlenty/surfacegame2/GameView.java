@@ -188,6 +188,10 @@ public class GameView extends SurfaceView implements Runnable {
         gameOnsound.stop();
     }
 
+    public static boolean ispMusic(){
+        return gameOnsound.isPlaying();
+    }
+
     private void update() throws InterruptedException {
         score++;
 

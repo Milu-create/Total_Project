@@ -9,10 +9,11 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 public class Menu extends Fragment {
     private String val;
-    private Button btn3;
+    private Button btn_play;
     private View view;
 
     OnMenuDataListener frListener;
@@ -35,7 +36,7 @@ public class Menu extends Fragment {
         if(context instanceof OnMenuDataListener) {
             frListener = (OnMenuDataListener) context;
         } else {
-            // исключение можно выбросить
+            throw new NullPointerException("Объект не создан на основе класса Menu");
         }
     }
 
@@ -43,14 +44,13 @@ public class Menu extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.menu, container, false);
-        btn3 = view.findViewById(R.id.btn_play);
-        btn3.setOnClickListener(new View.OnClickListener() {
+        btn_play = view.findViewById(R.id.btn_play);
+        btn_play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // печатаем полученное значение из активности
-                //Snackbar.make(view.findViewById(R.id.fr1root),val,Snackbar.LENGTH_LONG).show();
-                // вызываем метод реализованный в активности
-                frListener.onMenuDataListener("back string");
+                FragmentTransaction ftrans = getFragmentManager().beginTransaction();
+                ftrans.replace(R.id.root, new Login());
+                ftrans.commit();
 
             }
         });

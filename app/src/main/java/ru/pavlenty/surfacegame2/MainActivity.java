@@ -1,17 +1,24 @@
 package ru.pavlenty.surfacegame2;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import android.content.pm.ActivityInfo;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import com.google.android.material.snackbar.Snackbar;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, Begin.OnBeginDataListener, Menu.OnMenuDataListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, Begin.OnBeginDataListener, Menu.OnMenuDataListener,
+        Login.OnLoginDataListener, Menu_play.OnMenu_playDataListener{
+
+    static MediaPlayer base;
 
     public static final String KEY = "key";
 
@@ -31,6 +38,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         loadFragment(new Begin());
+        base = MediaPlayer.create(this,R.raw.moon);
+        base.start();
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    }
+
+    public static void stopMusic(){
+        base.stop();
+    }
+
+    public static boolean ispMusic(){
+        return base.isPlaying();
     }
 
     @Override
@@ -38,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Вы хотите выйти?").setCancelable(false).setPositiveButton("Да", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        GameView.stopMusic();
+                        if(MainActivity.ispMusic()) stopMusic();
                         Intent startMain = new Intent(Intent.ACTION_MAIN);
                         startMain.addCategory(Intent.CATEGORY_HOME);
                         startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -53,7 +71,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
         AlertDialog alert = builder.create();
         alert.show();
+    }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(MainActivity.ispMusic()) MainActivity.stopMusic();
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(startMain);
+        finish();
     }
 
     @Override
@@ -66,6 +94,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onMenuDataListener(String str) {
+        Snackbar.make(findViewById(R.id.root),str,Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onLoginDataListener(String str) {
+        Snackbar.make(findViewById(R.id.root),str,Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onMenu_playDataListener(String str) {
         Snackbar.make(findViewById(R.id.root),str,Snackbar.LENGTH_LONG).show();
     }
 }
