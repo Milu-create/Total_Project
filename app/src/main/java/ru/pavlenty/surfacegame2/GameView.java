@@ -37,9 +37,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     boolean flag;
     private boolean isGameOver;
-    int score;
-
-    int highScore[] = new int[4];
+    public static int score;
 
     SharedPreferences sharedPreferences;
 
@@ -79,12 +77,6 @@ public class GameView extends SurfaceView implements Runnable {
 
         score = 0;
         sharedPreferences = context.getSharedPreferences("SHAR_PREF_NAME", Context.MODE_PRIVATE);
-
-
-        highScore[0] = sharedPreferences.getInt("score1", 0);
-        highScore[1] = sharedPreferences.getInt("score2", 0);
-        highScore[2] = sharedPreferences.getInt("score3", 0);
-        highScore[3] = sharedPreferences.getInt("score4", 0);
         this.context = context;
 
 
